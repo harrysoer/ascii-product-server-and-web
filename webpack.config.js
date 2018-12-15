@@ -1,22 +1,23 @@
  const path = require("path");
- const HWP = require("html-webpack-plugin");
 
  module.exports = {
-     entry: "./src/index.js",
+     mode: "development",
+     entry: ["@babel/polyfill", "./src/index.js"],
      output: {
-         filename: "index.js",
-         path: "./public/assets"
+         path: path.resolve("public/assets"),
+         filename: "index.js"
      },
      module: {
          rules: [{
-             test: /\.js$/,
+             test: /\.jsx?$/,
+             exclude: /node_modules/,
              loader: "babel-loader",
-             exclude: /node_modules/
+             query: {
+                 presets: ["@babel/react", "@babel/env", "@babel/flow"],
+                 plugins: [
+                     "react-html-attrs",
+                 ]
+             }
          }]
-     },
-     plugins: [
-         new HWP({
-             template: path.join(__dirname, "/src/index.html")
-         })
-     ]
- }
+     }
+ };
