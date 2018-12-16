@@ -3,7 +3,6 @@ import React from 'react';
 const ProductCard = (props) => {
     const { size, price, face, date } = props.data;
 
-
     const formatDate = (dateAdded) => {
         let newDateAddedMs = new Date(dateAdded).getTime(),
             dateTodayMs = new Date().getTime(),
@@ -33,10 +32,10 @@ const ProductCard = (props) => {
 
     return (
         <div class="card">
-            <div class="product" fontSize={`${size}px`}>{face}</div>
+            <div class="product" style={{ fontSize: size }}>{face}</div>
             <div class="description">
                 <div class="price" >${Number(price).toFixed(2)}</div>
-                <div class="size" style={{ fontSize: `${size}px !important` }}>{size} pixels</div>
+                <div class="size">{size} pixels</div>
             </div>
             <div class="date-added">{formatDate(date)}</div>
         </div>

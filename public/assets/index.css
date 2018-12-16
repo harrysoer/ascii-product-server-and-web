@@ -13,11 +13,15 @@
 
 .product {
     color: #3c3b3b;
-    font-size: 33px;
     font-family: unset !important;
+    height: 100px;
     padding: 35px 0;
     text-align: center;
     background: #e8e8e8;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
 }
 
 .description {
