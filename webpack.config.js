@@ -16,6 +16,9 @@
                  presets: ["@babel/react", "@babel/env", "@babel/flow"],
                  plugins: [
                      "react-html-attrs",
+                     ['@babel/proposal-decorators', { legacy: true }],
+                     '@babel/proposal-class-properties',
+                     '@babel/plugin-syntax-dynamic-import'
                  ]
              }
          }]

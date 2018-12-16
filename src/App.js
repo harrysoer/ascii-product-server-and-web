@@ -1,30 +1,64 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
+
 import ProductCard from './components/ProductCard';
 
+const ProductsSection = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+`
 export default class App extends Component {
 
+    state = {
+        products: [],
+        query: {
+            "_page": 0,
+            "_sort": '',
+            "_limit": 40
+        }
+    }
+
+    componentDidMount() {
+        this.fetch()
+    }
+
+    fetch = async (page, sortKey) => {
+        const { query, products } = this.state
+        const param = Object.keys(query).map((key) => {
+            return encodeURIComponent(key) + '=' + encodeURIComponent(query[key])
+        }).join('&')
+
+        try {
+            const { data } = await axios.get(`http://localhost:3000/api/products?${param}`)
+            this.setState({
+                products: [...products, ...data]
+            })
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     render() {
-        return (<>
-            <header>
-                <h1>Products Grid</h1>
+        const { products } = this.state;
+        return (
+            <>
+                <header>
+                    <h1>Products Grid</h1>
+                    <p>Here you're sure to find a bargain on some of the finest ascii available to purchase. Be sure to peruse our selection of ascii faces in an exciting range of sizes and prices.</p>
+                </header>
 
-                <p>Here you're sure to find a bargain on some of the finest ascii available to purchase. Be sure to peruse our selection of ascii faces in an exciting range of sizes and prices.</p>
-
-                <p>But first, a word from our sponsors:</p>
-                <img class="ad" src={`/ads/?r=${Math.floor(Math.random() * 1000)}`} />
-            </header>
-
-            <section class="products">
-                <ProductCard
-                    data={{
-                        "id": "77526-0t3zoarp321o",
-                        "size": 33,
-                        "price": 880,
-                        "face": "(ಥ_ಥ)",
-                        "date": "Sat Dec 08 2018 12:31:51 GMT+0800 (Philippine Standard Time)"
-                    }}
-                />
-            </section>
-        </>)
+                <ProductsSection id="">
+                    {products.map((product, index) =>
+                        <>
+                            <ProductCard key={product.id} data={product} />
+                            {((index + 1) % 20 === 0) && ((<div style={{ width: '100%' }}>
+                                <p>But first, a word from our sponsors:</p>
+                                <img class="ad" src={`/ads/?r=${Math.floor(Math.random() * 1000)}`} />
+                            </div>))}
+                        </>
+                    )}
+                </ProductsSection>
+            </>)
     }
 }

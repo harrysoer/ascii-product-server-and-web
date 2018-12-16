@@ -1,9 +1,7 @@
 import React from 'react';
-import styled, { css } from 'styled-components'
-
+import styled from 'styled-components'
 
 const ProductCard = (props) => {
-    console.log(props)
     const { size, price, face, date } = props.data;
 
     const Card = styled.div`
@@ -15,7 +13,8 @@ const ProductCard = (props) => {
         display: grid;
         display: grid;
         font-family: 'Lato', sans-serif;
-        width: 25%;
+        margin: 20px;
+        width: 22%;
     `
 
     const Description = styled.div`
@@ -23,7 +22,9 @@ const ProductCard = (props) => {
     `
 
     const Product = styled.div`
+        color: #3c3b3b;
         font-size: 33px;
+        font-family: unset !important;
         padding: 35px 0;
         text-align: center;
         background: #e8e8e8;
@@ -48,11 +49,12 @@ const ProductCard = (props) => {
 
     const formatDate = (dateAdded) => {
         let newDateAddedMs = new Date(dateAdded).getTime(),
-            dateTodayMs = new Date().getTime();
-
+            dateTodayMs = new Date().getTime(),
+            dayDifference = 0;
         const dayMs = 1000 * 60 * 60 * 24,
-            timeDifference = Math.abs(dateTodayMs - newDateAddedMs),
-            dayDifference = Math.ceil(timeDifference / dayMs);
+            timeDifference = Math.abs(dateTodayMs - newDateAddedMs);
+
+        dayDifference = Math.ceil(timeDifference / dayMs);
 
         if (dayDifference > 7) {
             return new Date(dateAdded).toDateString().slice(4);
@@ -74,12 +76,12 @@ const ProductCard = (props) => {
 
     return (
         <Card>
-            <DateAdded>{formatDate(date)}</DateAdded>
             <Product fontSize={`${size}px`}>{face}</Product>
             <Description>
                 <Price>${Number(price).toFixed(2)}</Price>
                 <Size>{size} pixels</Size>
             </Description>
+            <DateAdded>{formatDate(date)}</DateAdded>
         </Card>
     )
 }
