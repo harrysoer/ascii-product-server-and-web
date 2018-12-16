@@ -18,22 +18,24 @@ export default class App extends Component {
         query: {
             "_page": 1,
             "_sort": '',
-            "_limit": 40
-        }
+            "_limit": 52
+        },
+        loadingIcon: ''
     }
 
     componentDidMount() {
+        this.loadingAnimate();
         this.fetch(this.state.query);
 
         window.addEventListener("scroll", () => {
             const { isLoading, isEnd, query } = this.state;
             let newQuery = { ...query };
-    
+
             if (document.documentElement) {
                 const fullHeight = document.body.offsetHeight,
                     heightTop = window.pageYOffset,
                     innerHeight = window.innerHeight;
-    
+
                 if (heightTop + innerHeight > fullHeight) {
                     if (!isLoading && !isEnd) {
                         newQuery = { ...newQuery, page: ++newQuery["_page"] }
@@ -46,7 +48,6 @@ export default class App extends Component {
 
     fetch = async (query) => {
         const { products } = this.state;
-
         const param = Object.keys(query).map((key) => {
             return encodeURIComponent(key) + '=' + encodeURIComponent(query[key])
         }).join('&')
@@ -67,8 +68,21 @@ export default class App extends Component {
         }
     }
 
+    loadingAnimate = (index) => {
+        let newIndex = index === 3 ? 0 : index;
+        const frequency = 5;
+        const ASCIIs = ["–", "/", "|", "\\\\"];
+        setInterval(_ => {
+            setTimeout(() => {
+                this.setState({
+                    loadingIcon: ASCIIs[newIndex]
+                })
+            }, 1000 / frequency);
+        }, 1000)
+    }
+
     render() {
-        const { products } = this.state;
+        const { isLoading, products, loadingIcon } = this.state;
         return (
             <>
                 <header>
@@ -82,10 +96,11 @@ export default class App extends Component {
                             <ProductCard data={product} />
                             {((index + 1) % 20 === 0) && ((<div style={{ width: '100%', height: '255px', textAlign: 'center' }}>
                                 <p>But first, a word from our sponsors:</p>
-                                <img class="ad" src={`/ads/?r=${Math.floor(Math.random() * 1000)}`} />
+                                <img class="ad" src={`/ads/?r=1`} />
                             </div>))}
                         </Fragment>
                     )}
+                    {isLoading && (<div style={{ width: '100%', height: '255px', textAlign: 'center' }}>{loadingIcon}</div>)}
                 </ProductsSection>
             </>)
     }
