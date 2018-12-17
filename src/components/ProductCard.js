@@ -32,12 +32,12 @@ const ProductCard = (props) => {
 
     return (
         <div class="card">
-            <div class="product" style={{ fontSize: size }}>{face}</div>
-            <div class="description">
-                <div class="price" >${Number(price).toFixed(2)}</div>
-                <div class="size">{size} pixels</div>
+            <div class="card__product" style={{ fontSize: size }}>{face}</div>
+            <div class="card__description">
+                <div class="card__price" >${Number(price).toFixed(2)}</div>
+                <div class="card__size">{size} pixels</div>
             </div>
-            <div class="date-added">{formatDate(date)}</div>
+            <div class="card__date-added">{formatDate(date)}</div>
         </div>
     )
 }
