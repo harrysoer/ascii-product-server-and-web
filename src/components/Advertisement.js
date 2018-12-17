@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 const Advertisement = (props) => {
     const source = `/ads/?r=${props.Id}`;
