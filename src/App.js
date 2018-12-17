@@ -1,17 +1,14 @@
 import React, { Component, Fragment } from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
 
 import ProductCard from './components/ProductCard';
+import Advertisement from './components/Advertisement';
+import LoadingIcon from './components/LoadingIcon';
 
-const ProductsSection = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: cneter;
-`
 export default class App extends Component {
 
     state = {
+        adsId: [],
         products: [],
         isEnd: false,
         isLoading: false,
@@ -20,11 +17,9 @@ export default class App extends Component {
             "_sort": '',
             "_limit": 52
         },
-        loadingIcon: ''
     }
 
     componentDidMount() {
-        this.loadingAnimate();
         this.fetch(this.state.query);
 
         window.addEventListener("scroll", () => {
@@ -68,40 +63,24 @@ export default class App extends Component {
         }
     }
 
-    loadingAnimate = (index) => {
-        let newIndex = index === 3 ? 0 : index;
-        const frequency = 5;
-        const ASCIIs = ["–", "/", "|", "\\\\"];
-        setInterval(_ => {
-            setTimeout(() => {
-                this.setState({
-                    loadingIcon: ASCIIs[newIndex]
-                })
-            }, 1000 / frequency);
-        }, 1000)
-    }
-
     render() {
-        const { isLoading, products, loadingIcon } = this.state;
+        const { isEnd, isLoading, products } = this.state;
         return (
             <>
                 <header>
                     <h1>Products Grid</h1>
                     <p>Here you're sure to find a bargain on some of the finest ascii available to purchase. Be sure to peruse our selection of ascii faces in an exciting range of sizes and prices.</p>
                 </header>
-
-                <ProductsSection id="product-list">
+                <div class="product-section" id="product-list">
                     {products.map((product, index) =>
                         <Fragment key={product.id}>
                             <ProductCard data={product} />
-                            {((index + 1) % 20 === 0) && ((<div style={{ width: '100%', height: '255px', textAlign: 'center' }}>
-                                <p>But first, a word from our sponsors:</p>
-                                <img class="ad" src={`/ads/?r=1`} />
-                            </div>))}
+                            {((index + 1) % 20 === 0) && <Advertisement Id={Math.floor(Math.random() * 20)} />}
                         </Fragment>
                     )}
-                    {isLoading && (<div style={{ width: '100%', height: '255px', textAlign: 'center' }}>{loadingIcon}</div>)}
-                </ProductsSection>
+                    {isLoading && (<LoadingIcon />)}
+                    {isEnd && <div class="end">~ end of catalogue ~</div>}
+                </div >
             </>)
     }
 }
