@@ -7,7 +7,7 @@ import ProductCard from './components/ProductCard';
 const ProductsSection = styled.div`
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: cneter;
 `
 export default class App extends Component {
 

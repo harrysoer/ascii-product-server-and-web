@@ -5,23 +5,25 @@
     box-shadow: 0 2px 6px 0 hsla(0, 0%, 0%, 0.2);
     border-radius: 10px;
     display: grid;
-    display: grid;
+    flex: auto;
     font-family: 'Lato', sans-serif;
-    margin: 20px;
-    width: 22%;
+    margin: 10px;
+    min-width: 200px;
 }
 
 .product {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     color: #3c3b3b;
     font-family: unset !important;
     height: 100px;
-    padding: 35px 0;
     text-align: center;
     background: #e8e8e8;
     justify-content: center;
     display: flex;
     align-items: center;
     white-space: nowrap;
+    padding: 30px;
 }
 
 .description {
