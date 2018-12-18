@@ -17,7 +17,8 @@
     "json-server": "^0.9.6",
     "lodash": "^4.17.11",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react-dom": "^16.6.3",
+    "react-select": "^2.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

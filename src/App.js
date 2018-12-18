@@ -5,6 +5,9 @@ import { unionBy } from 'lodash';
 import ProductCard from './components/ProductCard';
 import Advertisement from './components/Advertisement';
 import LoadingIcon from './components/LoadingIcon';
+import Sort from './components/Sort';
+
+const CancelToken = axios.CancelToken
 
 export default class App extends Component {
 
@@ -15,6 +18,8 @@ export default class App extends Component {
         isEnd: false,
         isDoneFetching: false,
         isLoading: false,
+        cancelSource: CancelToken.source(),
+        willContinue: true,
         query: {
             "_page": 1,
             "_sort": '',
@@ -39,34 +44,50 @@ export default class App extends Component {
         };
     }
 
-    fetch = async (isInitialFetch) => {
+    fetch = async (isInitialFetch = true) => {
         const { query } = this.state;
-        const param = Object.keys(query).map((key) => {
-            return encodeURIComponent(key) + '=' + encodeURIComponent(query[key])
-        }).join('&')
+        const param = Object.keys(query).map((key) => `${key}=${query[key]}`).join('&');
         let newQuery = { ...query };
 
         this.setState({ isLoading: true })
 
         try {
-            const { data } = await axios.get(`http://localhost:3000/api/products?${param}`)
+            const { data } = await axios.get(`http://localhost:3000/api/products?${param}`, { cancelToken: this.state.cancelSource.token })
             const { queuedProducts } = this.state;
 
             let newProducts = isInitialFetch ? data : [...queuedProducts, ...data]
-            newQuery = { ...newQuery, page: ++newQuery["_page"] }
+            newQuery = { ...newQuery, '_page': 1 + query["_page"] }
 
             this.setState({
                 [isInitialFetch ? 'products' : 'queuedProducts']: newProducts,
                 isLoading: false,
                 isDoneFetching: data.length ? false : true,
+                cancelToken: CancelToken.source(),
                 query: newQuery
             })
 
             data.length && this.fetch(false)
         } catch (err) {
+            if (axios.isCancel(err)) {
+                console.log('canceled')
+            }
             this.setState({ isLoading: false })
-            console.error(err)
         }
+    }
+
+    onSort = (option) => {
+        const { query, cancelSource } = this.state
+        cancelSource.cancel()
+
+        this.setState({
+            query: { ...query, '_page': 1, '_sort': option.value },
+            isDoneFetching: false,
+            isEnd: false,
+            isLoading: true,
+            products: [],
+            cancelSource: CancelToken.source(),
+            queuedProducts: []
+        }, _ => setTimeout(this.fetch, 1000))
     }
 
     fetchQueuedList = () => {
@@ -96,14 +117,15 @@ export default class App extends Component {
     }
 
     render() {
-        const { isEnd, isLoading, products, queuedProducts, isDoneFetching } = this.state;
+        const { isEnd, isLoading, products, queuedProducts, isDoneFetching, sort } = this.state;
         return (
             <>
                 <header>
                     <h1>Products Grid</h1>
                     <p>Here you're sure to find a bargain on some of the finest ascii available to purchase. Be sure to peruse our selection of ascii faces in an exciting range of sizes and prices.</p>
                 </header>
-                <div class="product-section" id="product-list">
+                <Sort onSort={this.onSort} value={sort} />
+                <div class="product-section">
                     {products.map((product, index) =>
                         <Fragment key={product.id}>
                             <ProductCard data={product} />
@@ -111,7 +133,8 @@ export default class App extends Component {
                         </Fragment>
                     )}
                     {isLoading && (<LoadingIcon />)}
-                    {(isEnd && isDoneFetching && !queuedProducts.length) && <div class="end">~ end of catalogue ~</div>}
+                    {(isEnd && isDoneFetching && !queuedProducts.length)
+                        && <div class="end">~ end of catalogue ~</div>}
                 </div >
             </>)
     }
