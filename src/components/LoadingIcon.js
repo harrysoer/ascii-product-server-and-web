@@ -32,7 +32,7 @@ export default class LoadingIcon extends Component {
     }
 
     componentWillUnmount() {
-        clearTimeout(this.timeoutQueue)
         clearInterval(this.intervalQueue);
+        clearTimeout(this.timeoutQueue)
     }
 }      
