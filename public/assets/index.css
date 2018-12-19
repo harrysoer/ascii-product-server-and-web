@@ -11,7 +11,7 @@ header {
     height: 200px;
     justify-content: center;
     margin-bottom: 30px;
-    padding: 30px 150px 0 150px ;
+    padding: 30px 150px 0 150px;
 }
 
 h1 {
@@ -82,6 +82,18 @@ p {
     padding: 2px 5px;
 }
 
+.ads {
+    width: 100%;
+    min-height: 300px;
+    text-align: center;
+    margin: 20px 0
+}
+
+.ads-img {
+    height: auto;
+    width: 30%
+}
+
 .loading {
     width: 100%;
     text-align: center;
@@ -92,4 +104,54 @@ p {
     width: 100%;
     text-align: center;
     font-size: 3vw;
+}
+
+@media (max-width: 991.98px) {
+    .sort {
+        width: 60% !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    header {
+        height: 250px;
+        padding: 30px 15px 0 15px !important;
+    }
+
+    h1 {
+        font-size: 2em;
+        margin: 0;
+    }
+
+    p {
+        font-size: 22px;
+    }
+
+    .sort {
+        width: 70% !important;
+    }
+
+    .ads-img {
+        height: auto;
+        width: 50%
+    }
+
+    .loading {
+        font-size: 2em
+    }
+}
+
+@media (max-width: 575.98px) {
+    header {
+        height: 300px !important;
+    }
+
+    .sort {
+        width: 90% !important;
+    }
+
+    .ads-img {
+        height: auto;
+        width: 90%
+    }
 }
