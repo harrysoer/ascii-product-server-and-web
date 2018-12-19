@@ -63,7 +63,7 @@ export default class App extends Component {
                 [isInitialFetch ? 'products' : 'queuedProducts']: newProducts,
                 isLoading: false,
                 isDoneFetching: data.length ? false : true,
-                cancelToken: CancelToken.source(),
+                cancelSource: CancelToken.source(),
                 query: newQuery
             })
 
