@@ -34,10 +34,11 @@ export default class App extends Component {
 
             if (document.documentElement) {
                 const fullHeight = document.body.offsetHeight,
-                    heightTop = window.pageYOffset,
+                    heightTop = window.scrollY,
                     innerHeight = window.innerHeight;
 
-                if (heightTop + innerHeight > fullHeight) {
+                if (heightTop + innerHeight >= fullHeight) {
+                    console.log('GETTING')
                     this.fetchQueuedList()
                 }
             }
