@@ -7,15 +7,33 @@ const options = [
   { label: "ID", value: "id" }
 ];
 
-const Sort = props => {
-  console.log(props.isFixed);
+const Sort = ({ isFixed, onSort }) => {
+  console.log(isFixed);
+  const majorColor = isFixed ? "#fff" : "#6f6f6f";
+  const selectStyling = {
+    control: styles => ({
+      ...styles,
+      backgroundColor: "inherit",
+      borderColor: majorColor,
+      borderWidth: '2px'
+    }),
+    clearIndicator: styles => ({ ...styles, color: majorColor }),
+    indicatorSeparator: styles => ({ ...styles, backgroundColor: majorColor }),
+    dropdownIndicator: styles => ({ ...styles, color: majorColor }),
+    option: styles => ({ ...styles, color: "#000" }),
+    placeholder: styles => ({ ...styles, color: majorColor }),
+    singleValue: styles => ({ ...styles, color: majorColor }),
+    valueContainer: styles =>({...styles, fontSize: '18px'})
+  };
+
   return (
     <div class="sort" id="sort-container">
-      <div class={`sort ${props.isFixed ? "fix-sort" : ""}`}>
+      <div class={`sort ${isFixed ? "fix-sort" : ""}`}>
         <div class="sort__selector">
           <Select
+            styles={selectStyling}
             placeholder="Sort List By:"
-            onChange={props.onSort}
+            onChange={onSort}
             options={options}
             isClearable
           />
