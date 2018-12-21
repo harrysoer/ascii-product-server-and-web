@@ -8,7 +8,6 @@ const options = [
 ];
 
 const Sort = ({ isFixed, onSort }) => {
-  console.log(isFixed);
   const majorColor = isFixed ? "#fff" : "#6f6f6f";
   const selectStyling = {
     control: styles => ({
