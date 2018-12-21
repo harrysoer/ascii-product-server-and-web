@@ -10,7 +10,6 @@ header {
     text-align: center;
     height: 200px;
     justify-content: center;
-    margin-bottom: 30px;
     padding: 30px 150px 0 150px;
 }
 
@@ -24,6 +23,20 @@ p {
 }
 
 .sort {
+    background: #FFFF;
+    width: 100%;
+    height: 65px;
+    display: flex;
+    transition: 0.5s ease-in-out;
+}
+
+.fix-sort {
+    background: #41d46a;
+    position: fixed;
+    top: 0;
+}
+
+.sort__selector {
     width: 30%;
     margin: auto;
 }
@@ -118,25 +131,20 @@ p {
         height: 250px;
         padding: 30px 15px 0 15px !important;
     }
-
     h1 {
         font-size: 2em;
         margin: 0;
     }
-
     p {
         font-size: 22px;
     }
-
     .sort {
         width: 70% !important;
     }
-
     .ads-img {
         height: auto;
         width: 50%
     }
-
     .loading {
         font-size: 2em
     }
@@ -146,11 +154,9 @@ p {
     header {
         height: 300px !important;
     }
-
     .sort {
         width: 90% !important;
     }
-
     .ads-img {
         height: auto;
         width: 90%

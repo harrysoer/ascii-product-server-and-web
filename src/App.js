@@ -20,6 +20,8 @@ export default class App extends Component {
         isLoading: false,
         cancelSource: CancelToken.source(),
         willContinue: true,
+        sortContainerOffsetTop: 0,
+        sortContainerFixed: false,
         query: {
             "_page": 1,
             "_sort": '',
@@ -29,6 +31,8 @@ export default class App extends Component {
 
     componentDidMount() {
         this.fetch(true);
+        const sortContainer = document.getElementById('sort-container')
+        this.setState({ sortContainerOffsetTop: sortContainer.offsetTop})
 
         window.onscroll = () => {
 
@@ -41,8 +45,18 @@ export default class App extends Component {
                     console.log('GETTING')
                     this.fetchQueuedList()
                 }
+
+                this.setSortSticky(heightTop)
             }
         };
+    }
+
+    setSortSticky = (heightTop) =>{
+        const { sortContainerOffsetTop } = this.state
+        const willStick = ( heightTop > sortContainerOffsetTop)? true : false
+        console.log(heightTop, sortContainerOffsetTop)
+        console.log('cs',willStick)
+        this.setState({ sortContainerFixed: willStick})
     }
 
     fetch = async (isInitialFetch = true) => {
@@ -118,14 +132,15 @@ export default class App extends Component {
     }
 
     render() {
-        const { isEnd, isLoading, products, queuedProducts, isDoneFetching, sort } = this.state;
+        const { isEnd, isLoading, products, queuedProducts, isDoneFetching, sort, sortContainerFixed } = this.state;
+        console.log(sortContainerFixed)
         return (
             <>
                 <header>
                     <h1>Products Grid</h1>
                     <p>Here you're sure to find a bargain on some of the finest ascii available to purchase. Be sure to peruse our selection of ascii faces in an exciting range of sizes and prices.</p>
                 </header>
-                <Sort onSort={this.onSort} value={sort} />
+                <Sort onSort={this.onSort} value={sort} isFixed={sortContainerFixed} />
                 <div class="product-section">
                     {products.map((product, index) =>
                         <Fragment key={product.id}>
